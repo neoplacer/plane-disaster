@@ -916,5 +916,60 @@ namespace PlaneDisaster
 			}
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
-	}
+
+        private void exportViewsToSQLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string retVal = "";
+            foreach (string porCe in this._dbcon.GetViews())
+            {
+                retVal += Environment.NewLine;
+                retVal += "'" + porCe + "'";
+                retVal += Environment.NewLine;
+                retVal += this._dbcon.GetViewSQL(porCe);
+            }
+            SaveFileDialog dlg = new SaveFileDialog();
+            string FileName;
+            dlg.Filter = FILTER_SQL_SCRIPTS;
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                FileName = dlg.FileName;
+                using (StreamWriter sw = File.CreateText(FileName))
+                {
+                    sw.Write(retVal);
+                }
+            }
+
+        }
+
+        private void exportProceduresToSQLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string retVal = "";
+            foreach (string porCe in this._dbcon.GetProcedures())
+            {
+                retVal += Environment.NewLine;
+                retVal += "'" + porCe + "'";
+                retVal += Environment.NewLine;
+                retVal += this._dbcon.GetProcedureSQL(porCe);
+            }
+            SaveFileDialog dlg = new SaveFileDialog();
+            string FileName;
+            dlg.Filter = FILTER_SQL_SCRIPTS;
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                FileName = dlg.FileName;
+                using (StreamWriter sw = File.CreateText(FileName))
+                {
+                    sw.Write(retVal);
+                }
+            }
+
+        }
+
+        private void exportTableDataToSQLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
