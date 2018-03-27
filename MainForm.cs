@@ -969,7 +969,27 @@ namespace PlaneDisaster
 
         private void exportTableDataToSQLToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string retVal = "";
+            foreach (string porCe in this._dbcon.GetTables())
+            {
+                retVal += Environment.NewLine;
+                retVal += "'" + porCe + "'";
+                retVal += Environment.NewLine;
+                _dbcon.GetSchema().
+                retVal += this._dbcon.GetProcedureSQL(porCe);
+            }
+            SaveFileDialog dlg = new SaveFileDialog();
+            string FileName;
+            dlg.Filter = FILTER_SQL_SCRIPTS;
 
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                FileName = dlg.FileName;
+                using (StreamWriter sw = File.CreateText(FileName))
+                {
+                    sw.Write(retVal);
+                }
+            }
         }
     }
 }
